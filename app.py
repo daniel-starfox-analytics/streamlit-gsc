@@ -96,7 +96,7 @@ def main():
             selected_property = st.selectbox("Seleccione una propiedad", properties)
             webproperty = account[selected_property]
             if st.button("Obtener datos"):
-                df = webproperty.query.range('today',days=-7).dimension('date').get().to_dataframe()
+                df = webproperty.query.range('today',days=-7).dimension('page').get().to_dataframe()
                 st.write(df)
         else:
             st.write("No hay nada aquí")
