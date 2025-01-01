@@ -1,0 +1,6 @@
+google-api-core==2.24.0
+google-api-python-client==2.156.0
+google-auth==2.37.0
+google-auth-oauthlib==1.2.1
+searchconsole==0.0.4
+streamlit==1.41.1
