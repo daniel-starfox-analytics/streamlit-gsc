@@ -6,6 +6,7 @@ import datetime, time
 import pandas as pd
 
 # TODO: Seleccionar dispositivo
+# TODO: CAMBIAR BOTON DESCARGAR CSV POR LINK
 
 
 # Constants

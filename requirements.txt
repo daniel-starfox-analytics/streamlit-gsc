@@ -1,7 +1,8 @@
-google-api-core==2.24.0
+google-api-core==2.10.2
 google-api-python-client==2.156.0
-google-auth==2.37.0
-google-auth-oauthlib==1.2.1
-searchconsole==0.0.4
+google-auth==1.35.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==0.5.3
+pandas==2.2.3
+searchconsole @ git+https://github.com/joshcarty/google-searchconsole@12c5cf5d86b6c4650055a2aeb6a7a59e5d5a3a7d
 streamlit==1.41.1
-pandas
