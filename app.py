@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 import searchconsole
 import datetime, time
 import pandas as pd
+import base64
 
 # TODO: Seleccionar dispositivo
 # TODO: CAMBIAR BOTON DESCARGAR CSV POR LINK
@@ -297,13 +298,10 @@ def download_csv(report):
     """
     Generates and displays a download link for the report DataFrame in CSV format.
     """
-    df = report.to_csv(index=False).encode('utf-8')
-    st.download_button(
-            label="Descargar como CSV",
-            data=df,
-            file_name=f'gsc_report_{int(time.time())}.csv',
-            mime='text/csv'
-        )
+    csv = report.to_csv(index=False, encoding='utf-8')
+    b64_csv = base64.b64encode(csv.encode()).decode()
+    href = f'<a href="data:file/csv;base64,{b64_csv}" download="gsc_report_{int(time.time())}.csv">Descargar como CSV</a>'
+    st.markdown(href, unsafe_allow_html=True)
 
 def main():
     """
@@ -324,8 +322,8 @@ def main():
         if st.button("Autentificarse con Google"):
             # Open the authentication URL
             st.write('Ingrese al siguiente link:')
+            st.write(f'[Google Sign-In]({st.session_state.auth_url})')
             st.write('No se guardarán sus datos')
-            st.markdown(f'[Google Sign-In]({st.session_state.auth_url})', unsafe_allow_html=True)
     else:
         init_session_state()
         account = auth_search_console(client_config, st.session_state.credentials)
