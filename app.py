@@ -22,7 +22,7 @@ DATE_RANGE_OPTIONS = [
     'Elegir fechas'
 ]
 DEVICE_OPTIONS = ["Todos", "desktop", "mobile", "tablet"]
-BASE_DIMENSIONS = ["page", "query", "country", "date"]
+BASE_DIMENSIONS = ["page", "query", "country", "date", "device"]
 MAX_ROWS = 1_000_000
 DF_PREVIEW_ROWS = 100
 
@@ -163,9 +163,14 @@ def fetch_data_loading(webproperty, search_type, start_date, end_date, dimension
 def update_dimensions(selected_search_type):
     """
     Updates and returns the list of dimensions based on the selected search type.
-    Adds 'device' to dimensions if the search type requires it.
     """
-    return BASE_DIMENSIONS + ['device'] if selected_search_type != 'discover' else BASE_DIMENSIONS
+    if selected_search_type == 'discover':
+        BASE_DIMENSIONS = [dimension for dimension in BASE_DIMENSIONS if dimension not in ['query', 'device']]
+        return BASE_DIMENSIONS
+    elif selected_search_type == 'googleNews':
+        return BASE_DIMENSIONS.remove('query')
+    else:
+        return BASE_DIMENSIONS
 
 
 def calc_date_range(selection, custom_start=None, custom_end=None):
