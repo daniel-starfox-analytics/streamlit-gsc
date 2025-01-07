@@ -7,7 +7,7 @@ import pandas as pd
 import base64
 
 # TODO: Seleccionar dispositivo
-# TODO: CAMBIAR BOTON DESCARGAR CSV POR LINK
+
 
 
 # Constants
@@ -232,6 +232,18 @@ def show_search_type_selector():
         key='search_type_selector'
     )
 
+def show_device_selector():
+    """
+    Displays a dropdown selector for choosing the device.
+    Returns the selected device.
+    """
+    return st.selectbox(
+        "Seleccione dispositivo:",
+        DEVICE_OPTIONS,
+        index=DEVICE_OPTIONS.index(st.session_state.selected_device),
+        key='device_selector'
+    )
+
 
 def show_date_range_selector():
     """
@@ -290,7 +302,7 @@ def show_dataframe(report):
     """
     Shows a preview of the first 100 rows of the report DataFrame in an expandable section.
     """
-    with st.expander("Preview the First 100 Rows"):
+    with st.expander(f"Mostrar las primeras {DF_PREVIEW_ROWS} filas"):
         st.dataframe(report.head(DF_PREVIEW_ROWS))
 
 
@@ -332,6 +344,8 @@ def main():
         if properties:
             webproperty = show_property_selector(properties, account)
             search_type = show_search_type_selector()
+            if search_type != 'discover':
+                device = show_device_selector()
             date_range_selection = show_date_range_selector()
             if date_range_selection == 'Elegir fechas':
                 show_custom_date_inputs()
