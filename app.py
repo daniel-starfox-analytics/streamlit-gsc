@@ -165,8 +165,8 @@ def update_dimensions(selected_search_type):
     Updates and returns the list of dimensions based on the selected search type.
     """
     if selected_search_type == 'discover':
-        BASE_DIMENSIONS = [dimension for dimension in BASE_DIMENSIONS if dimension not in ['query', 'device']]
-        return BASE_DIMENSIONS
+        discover_dimensions = [dimension for dimension in BASE_DIMENSIONS if dimension not in ['query', 'device']]
+        return discover_dimensions
     elif selected_search_type == 'googleNews':
         return BASE_DIMENSIONS.remove('query')
     else:
