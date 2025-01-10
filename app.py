@@ -138,7 +138,7 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     query = webproperty.query.range(start_date, end_date).search_type(search_type).dimension(*dimensions)
 
     if device_type and device_type != 'Todos':
-        query = query.filter('device', 'equals', device_type.lower())
+        query = query.filter('device', device_type.lower(), 'equals')
 
     try:
         return query.limit(MAX_ROWS).get().to_dataframe()
