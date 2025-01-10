@@ -241,12 +241,21 @@ def show_device_selector():
     Displays a dropdown selector for choosing the device.
     Returns the selected device.
     """
-    return st.selectbox(
+    # Asegúrate de que el valor predeterminado sea válido
+    default_index = DEVICE_OPTIONS.index(st.session_state.selected_device) \
+        if st.session_state.selected_device in DEVICE_OPTIONS else 0
+
+    # Muestra el selector
+    selected_device = st.selectbox(
         "Seleccione dispositivo:",
         DEVICE_OPTIONS,
-        index=DEVICE_OPTIONS.index(st.session_state.selected_device),
+        index=default_index,
         key='device_selector'
     )
+
+    # Actualiza el estado
+    st.session_state.selected_device = selected_device
+    return selected_device
 
 
 def show_date_range_selector():
