@@ -137,7 +137,7 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     """
     query = webproperty.query.range(start_date, end_date).search_type(search_type).dimension(*dimensions)
 
-    if 'device' in dimensions and device_type and device_type != 'Todos':
+    if device_type and device_type != 'Todos':
         query = query.filter('device', 'equals', device_type.lower())
 
     try:
@@ -307,13 +307,13 @@ def show_dimensions_selector(search_type):
     return selected_dimensions
 
 
-def show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions):
+def show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device_type):
     """
     Displays a button to fetch data based on selected parameters.
     Shows the report DataFrame and download link upon successful data fetching.
     """
     if st.button("Extraer Data"):
-        report = fetch_data_loading(webproperty, search_type, start_date, end_date, selected_dimensions)
+        report = fetch_data_loading(webproperty, search_type, start_date, end_date, selected_dimensions, device_type)
 
         if report is not None:
             show_dataframe(report)
@@ -368,6 +368,7 @@ def main():
         properties = list_gsc_properties(st.session_state.credentials)
 
         if properties:
+            device = None
             webproperty = show_property_selector(properties, account)
             search_type = show_search_type_selector()
             if search_type != 'discover':
@@ -380,7 +381,7 @@ def main():
                 start_date, end_date = calc_date_range(date_range_selection)
 
             selected_dimensions = show_dimensions_selector(search_type)
-            show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions)
+            show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device)
 
 
 if __name__ == "__main__":
