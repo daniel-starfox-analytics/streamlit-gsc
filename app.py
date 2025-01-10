@@ -228,7 +228,7 @@ def show_search_type_selector():
     Returns the selected search type.
     """
     return st.selectbox(
-        "Seleccione tipo de búsqueda:",
+        "Seleccione tipo de búsqueda (chequee que la propiedad no se haya modificado):",
         SEARCH_TYPES,
         index=SEARCH_TYPES.index(st.session_state.selected_search_type),
         key='search_type_selector'
