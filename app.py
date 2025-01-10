@@ -168,10 +168,9 @@ def update_dimensions(selected_search_type):
         discover_dimensions = [dimension for dimension in BASE_DIMENSIONS if dimension not in ['query', 'device']]
         return discover_dimensions
     elif selected_search_type == 'googleNews':
-        return BASE_DIMENSIONS.remove('query')
+        return [dimension for dimension in BASE_DIMENSIONS if dimension != 'query']
     else:
         return BASE_DIMENSIONS
-
 
 def calc_date_range(selection, custom_start=None, custom_end=None):
     """
@@ -278,12 +277,25 @@ def show_dimensions_selector(search_type):
     Returns the selected dimensions.
     """
     available_dimensions = update_dimensions(search_type)
-    return st.multiselect(
+    
+    # Filtra las dimensiones seleccionadas que no están en las opciones disponibles
+    default_dimensions = [
+        dim for dim in st.session_state.selected_dimensions 
+        if dim in available_dimensions
+    ]
+    
+    # Muestra el selector con valores por defecto válidos
+    selected_dimensions = st.multiselect(
         "Seleccione Dimensiones:",
         available_dimensions,
-        default=st.session_state.selected_dimensions,
+        default=default_dimensions,
         key='dimensions_selector'
     )
+    
+    # Actualiza las dimensiones seleccionadas en el estado
+    st.session_state.selected_dimensions = selected_dimensions
+    
+    return selected_dimensions
 
 
 def show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions):
