@@ -4,9 +4,7 @@ from googleapiclient.discovery import build
 import searchconsole
 import datetime, time
 import pandas as pd
-import base64
-
-# TODO: Seleccionar dispositivo
+import base64, re
 
 
 
@@ -307,7 +305,7 @@ def show_dimensions_selector(search_type):
     return selected_dimensions
 
 
-def show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device_type):
+def show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device_type, properties):
     """
     Displays a button to fetch data based on selected parameters.
     Shows the report DataFrame and download link upon successful data fetching.
@@ -317,7 +315,7 @@ def show_fetch_data_button(webproperty, search_type, start_date, end_date, selec
 
         if report is not None:
             show_dataframe(report)
-            download_csv(report)
+            download_csv(report, properties)
 
 
 # -------------
@@ -332,13 +330,23 @@ def show_dataframe(report):
         st.dataframe(report.head(DF_PREVIEW_ROWS))
 
 
-def download_csv(report):
+def extract_full_domain(input_string):
+    # Expresión regular para capturar todos los segmentos del dominio
+    match = re.search(r"(?:https?://(?:www\.)?|sc-domain:)([\w\-\.]+)\.([\w\-]+)", input_string)
+    if match:
+        # Quitar los puntos y concatenar todas las partes
+        full_domain = match.group(1) + match.group(2)
+        return full_domain.replace('.', '_')
+    return ""
+
+def download_csv(report, properties):
     """
     Generates and displays a download link for the report DataFrame in CSV format.
     """
     csv = report.to_csv(index=False, encoding='utf-8')
+    property_name = extract_full_domain(properties)
     b64_csv = base64.b64encode(csv.encode()).decode()
-    href = f'<a href="data:file/csv;base64,{b64_csv}" download="gsc_report_{int(time.time())}.csv">Descargar como CSV</a>'
+    href = f'<a href="data:file/csv;base64,{b64_csv}" download="gsc_report_{property_name}_{int(time.time())}.csv">Descargar como CSV</a>'
     st.markdown(href, unsafe_allow_html=True)
 
 def main():
@@ -381,7 +389,7 @@ def main():
                 start_date, end_date = calc_date_range(date_range_selection)
 
             selected_dimensions = show_dimensions_selector(search_type)
-            show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device)
+            show_fetch_data_button(webproperty, search_type, start_date, end_date, selected_dimensions, device, properties)
 
 
 if __name__ == "__main__":
