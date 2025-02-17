@@ -310,12 +310,17 @@ def show_fetch_data_button(webproperty, search_type, start_date, end_date, selec
     Displays a button to fetch data based on selected parameters.
     Shows the report DataFrame and download link upon successful data fetching.
     """
+    report = None
     if st.button("Extraer Data"):
-        report = fetch_data_loading(webproperty, search_type, start_date, end_date, selected_dimensions, device_type)
+        with st.spinner("Procesando..."):
+            report = fetch_data_loading(webproperty, search_type, start_date, end_date, selected_dimensions, device_type)
 
         if report is not None:
             show_dataframe(report)
-            download_csv(report, webproperty)
+            with st.spinner("Generando CSV..."):
+                download_csv(report, webproperty)
+            st.write()
+            st.caption("Proceso completado ✅")
 
 
 # -------------
