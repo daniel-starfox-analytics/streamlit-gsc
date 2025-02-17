@@ -319,7 +319,7 @@ def show_fetch_data_button(webproperty, search_type, start_date, end_date, selec
             show_dataframe(report)
             with st.spinner("Generando CSV..."):
                 download_csv(report, webproperty)
-            st.write()
+            st.write("")
             st.caption("Proceso completado ✅")
 
 
