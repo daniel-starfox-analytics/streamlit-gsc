@@ -1,7 +1,7 @@
 import streamlit as st
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-import searchconsole
+import gscwrapper
 import datetime, time
 import pandas as pd
 import base64, re
@@ -115,7 +115,7 @@ def auth_search_console(client_config, credentials):
         "scopes": credentials.scopes,
         "id_token": getattr(credentials, "id_token", None),
     }
-    return searchconsole.authenticate(client_config=client_config, credentials=token)
+    return gscwrapper.generate_auth(client_config=client_config, credentials=token)
 
 
 def list_gsc_properties(credentials):
@@ -133,13 +133,17 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Fetches Google Search Console data for a specified property, date range, dimensions, and device type.
     Handles errors and returns the data as a DataFrame.
     """
-    query = webproperty.query.range(start_date, end_date).search_type(search_type).dimension(*dimensions)
+    data_state = "final"
+    if "hourly" in dimensions:
+        data_state = "hourly_all"
+
+    query = webproperty.query.range(start_date, end_date).search_type(search_type).dimension(dimensions).data_state(data_state)
 
     if device_type and device_type != 'Todos':
         query = query.filter('device', device_type.lower(), 'equals')
 
     try:
-        return query.limit(MAX_ROWS).get().to_dataframe()
+        return (query.limit(MAX_ROWS).get()).df
     except Exception as e:
         show_error(e)
         return pd.DataFrame()
@@ -277,7 +281,7 @@ def show_custom_date_inputs():
     st.session_state.custom_start_date = st.date_input("Fecha inicio", st.session_state.custom_start_date)
     st.session_state.custom_end_date = st.date_input("Fecha fin", st.session_state.custom_end_date)
 
-
+'''
 def show_dimensions_selector(search_type):
     """
     Displays a multi-select box for choosing dimensions based on the selected search type.
@@ -302,6 +306,44 @@ def show_dimensions_selector(search_type):
     # Actualiza las dimensiones seleccionadas en el estado
     st.session_state.selected_dimensions = selected_dimensions
     
+    return selected_dimensions
+'''
+
+
+def show_dimensions_selector(search_type):
+    """
+    Displays a multi-select box for choosing dimensions based on the selected search type.
+    Prevents selecting both 'hour' and 'date' at the same time.
+    Returns the selected dimensions.
+    """
+    available_dimensions = update_dimensions(search_type)
+    
+    # Aplica la lógica para evitar seleccionar 'hour' y 'date' al mismo tiempo
+    current_selection = st.session_state.get('selected_dimensions', [])
+
+    # Elimina 'date' si ya está 'hour' seleccionado
+    if 'hour' in current_selection:
+        filtered_dimensions = [dim for dim in available_dimensions if dim != 'date']
+    # Elimina 'hour' si ya está 'date' seleccionado
+    elif 'date' in current_selection:
+        filtered_dimensions = [dim for dim in available_dimensions if dim != 'hour']
+    else:
+        filtered_dimensions = available_dimensions
+
+    # Filtra las dimensiones seleccionadas que todavía están en las opciones
+    default_dimensions = [dim for dim in current_selection if dim in filtered_dimensions]
+
+    # Muestra el multiselect
+    selected_dimensions = st.multiselect(
+        "Seleccione Dimensiones:",
+        filtered_dimensions,
+        default=default_dimensions,
+        key='dimensions_selector'
+    )
+
+    # Actualiza el estado
+    st.session_state.selected_dimensions = selected_dimensions
+
     return selected_dimensions
 
 

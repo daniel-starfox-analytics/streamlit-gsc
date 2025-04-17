@@ -1,8 +1,8 @@
+gscwrapper @ git+https://github.com/antoineeripret/gsc_wrapper@17186d74169c14f98e049df9e9746ca0b4d6d029
 google-api-core==2.10.2
 google-api-python-client==2.156.0
 google-auth==1.35.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==0.5.3
 pandas==2.2.3
-searchconsole @ git+https://github.com/joshcarty/google-searchconsole@12c5cf5d86b6c4650055a2aeb6a7a59e5d5a3a7d
 streamlit==1.41.1
