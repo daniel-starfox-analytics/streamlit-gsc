@@ -135,12 +135,12 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     """
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
-    
+
     data_state = "final"
     if "hourly" in dimensions:
         data_state = "hourly_all"
 
-    query = webproperty.query.range(start_date, end_date).search_type(search_type).dimension(dimensions).data_state(data_state)
+    query = webproperty.query.range(start_date, end_date).search_type(search_type).dimensions(dimensions).data_state(data_state)
 
     if device_type and device_type != 'Todos':
         query = query.filter('device', device_type.lower(), 'equals')
