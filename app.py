@@ -134,7 +134,8 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Handles errors and returns the data as a DataFrame.
     """
 
-    logging.info(dimensions)
+    st.sidebar.markdown("### Debug info")
+    st.sidebar.write("Dimensiones:", dimensions)
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
 
