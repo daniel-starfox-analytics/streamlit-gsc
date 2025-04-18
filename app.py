@@ -20,7 +20,7 @@ DATE_RANGE_OPTIONS = [
     'Elegir fechas'
 ]
 DEVICE_OPTIONS = ["Todos", "desktop", "mobile", "tablet"]
-BASE_DIMENSIONS = ["page", "query", "country", "date", "device"]
+BASE_DIMENSIONS = ["page", "query", "country", "date", "device", "hour"]
 MAX_ROWS = 1_000_000
 DF_PREVIEW_ROWS = 100
 
