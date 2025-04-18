@@ -1,7 +1,7 @@
 import streamlit as st
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-import gscwrapper
+import gscwrapper, logging
 import datetime, time
 import pandas as pd
 import base64, re
@@ -134,7 +134,7 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Handles errors and returns the data as a DataFrame.
     """
 
-    print(dimensions)
+    logging.debug(dimensions)
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
 
