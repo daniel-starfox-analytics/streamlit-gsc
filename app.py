@@ -281,33 +281,33 @@ def show_custom_date_inputs():
     st.session_state.custom_start_date = st.date_input("Fecha inicio", st.session_state.custom_start_date)
     st.session_state.custom_end_date = st.date_input("Fecha fin", st.session_state.custom_end_date)
 
-'''
-def show_dimensions_selector(search_type):
-    """
-    Displays a multi-select box for choosing dimensions based on the selected search type.
-    Returns the selected dimensions.
-    """
-    available_dimensions = update_dimensions(search_type)
+
+# def show_dimensions_selector(search_type):
+#     """
+#     Displays a multi-select box for choosing dimensions based on the selected search type.
+#     Returns the selected dimensions.
+#     """
+#     available_dimensions = update_dimensions(search_type)
     
-    # Filtra las dimensiones seleccionadas que no están en las opciones disponibles
-    default_dimensions = [
-        dim for dim in st.session_state.selected_dimensions 
-        if dim in available_dimensions
-    ]
+#     # Filtra las dimensiones seleccionadas que no están en las opciones disponibles
+#     default_dimensions = [
+#         dim for dim in st.session_state.selected_dimensions 
+#         if dim in available_dimensions
+#     ]
     
-    # Muestra el selector con valores por defecto válidos
-    selected_dimensions = st.multiselect(
-        "Seleccione Dimensiones:",
-        available_dimensions,
-        default=default_dimensions,
-        key='dimensions_selector'
-    )
+#     # Muestra el selector con valores por defecto válidos
+#     selected_dimensions = st.multiselect(
+#         "Seleccione Dimensiones:",
+#         available_dimensions,
+#         default=default_dimensions,
+#         key='dimensions_selector'
+#     )
     
-    # Actualiza las dimensiones seleccionadas en el estado
-    st.session_state.selected_dimensions = selected_dimensions
+#     # Actualiza las dimensiones seleccionadas en el estado
+#     st.session_state.selected_dimensions = selected_dimensions
     
-    return selected_dimensions
-'''
+#     return selected_dimensions
+
 
 
 def show_dimensions_selector(search_type):
