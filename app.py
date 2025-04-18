@@ -133,6 +133,8 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Fetches Google Search Console data for a specified property, date range, dimensions, and device type.
     Handles errors and returns the data as a DataFrame.
     """
+
+    print(dimensions)
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
 
@@ -346,7 +348,6 @@ def show_dimensions_selector(search_type):
 
     # Actualiza el estado
     st.session_state.selected_dimensions = selected_dimensions
-    st.write(selected_dimensions)
     return selected_dimensions
 
 
