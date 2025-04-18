@@ -1,12 +1,10 @@
 import streamlit as st
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-import gscwrapper, logging
+import gscwrapper
 import datetime, time
 import pandas as pd
 import base64, re
-
-logging.basicConfig(level=logging.INFO)
 
 
 
@@ -135,8 +133,7 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Fetches Google Search Console data for a specified property, date range, dimensions, and device type.
     Handles errors and returns the data as a DataFrame.
     """
-    logging.info(dimensions)
-    
+
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
 
@@ -343,7 +340,7 @@ def show_dimensions_selector(search_type):
 
     # Muestra el multiselect
     selected_dimensions = st.multiselect(
-        "Seleccione Dimensiones:",
+        'Seleccione Dimensiones (no se pueden seleccionar "hour" y "date" a la vez):',
         filtered_dimensions,
         default=default_dimensions,
         key='dimensions_selector'
