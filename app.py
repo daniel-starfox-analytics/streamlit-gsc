@@ -32,7 +32,9 @@ def setup_streamlit():
     st.set_page_config(page_title="Simple GSC Api Connector")
     st.title("Simple GSC Api Connector")
     url = "https://github.com/searchsolved/search-solved-public-seo/tree/main/search-console/streamlit-simple-gsc-connector"
-    st.write(f"[Código original por Lee Foot](url)")
+    st.caption(f"[Código original por Lee Foot](url)")
+    st.caption(("[Actualizado por Damián Taubaso](https://www.linkedin.com/in/dtaubaso/)"))
+    # https://i.pinimg.com/1200x/b4/28/5b/b4285b927f370a8407ed8415a11f8c91.jpg
     st.divider()
 
 
