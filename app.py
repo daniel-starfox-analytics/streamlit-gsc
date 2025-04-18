@@ -139,7 +139,7 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     end_date = end_date.strftime("%Y-%m-%d") 
 
     data_state = "final"
-    if "hourly" in dimensions:
+    if "hour" in dimensions:
         data_state = "hourly_all"
 
     query = webproperty.query.range(start_date, end_date).search_type(search_type).dimensions(dimensions).data_state(data_state)
