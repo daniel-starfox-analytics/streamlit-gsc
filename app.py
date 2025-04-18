@@ -6,6 +6,8 @@ import datetime, time
 import pandas as pd
 import base64, re
 
+logging.basicConfig(level=logging.INFO)
+
 
 
 # Constants
@@ -133,9 +135,8 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Fetches Google Search Console data for a specified property, date range, dimensions, and device type.
     Handles errors and returns the data as a DataFrame.
     """
-
-    st.sidebar.markdown("### Debug info")
-    st.sidebar.write("Dimensiones:", dimensions)
+    logging.info(dimensions)
+    
     start_date = start_date.strftime("%Y-%m-%d") 
     end_date = end_date.strftime("%Y-%m-%d") 
 
@@ -143,7 +144,8 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     if "hour" in dimensions:
         data_state = "hourly_all"
 
-    query = webproperty.query.range(start_date, end_date).search_type(search_type).dimensions(dimensions).data_state(data_state)
+    query = (webproperty.query.range(start_date, end_date)
+             .search_type(search_type).dimensions(dimensions).data_state(data_state))
 
     if device_type and device_type != 'Todos':
         query = query.filter('device', device_type.lower(), 'equals')
@@ -349,6 +351,11 @@ def show_dimensions_selector(search_type):
 
     # Actualiza el estado
     st.session_state.selected_dimensions = selected_dimensions
+
+    # Mostrar advertencia si se detecta intento de seleccionar ambas (antes del filtrado)
+    if 'hour' in selected_dimensions and 'date' in update_dimensions(search_type):
+        st.warning("⚠️ No se puede usar 'hour' junto con 'date'. Por favor seleccione solo una de ellas.")
+
     return selected_dimensions
 
 
