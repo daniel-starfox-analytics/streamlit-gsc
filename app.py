@@ -133,6 +133,9 @@ def fetch_gsc_data(webproperty, search_type, start_date, end_date, dimensions, d
     Fetches Google Search Console data for a specified property, date range, dimensions, and device type.
     Handles errors and returns the data as a DataFrame.
     """
+    start_date = start_date.strftime("%Y-%m-%d") 
+    end_date = end_date.strftime("%Y-%m-%d") 
+    
     data_state = "final"
     if "hourly" in dimensions:
         data_state = "hourly_all"
