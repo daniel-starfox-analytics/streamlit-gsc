@@ -349,10 +349,6 @@ def show_dimensions_selector(search_type):
     # Actualiza el estado
     st.session_state.selected_dimensions = selected_dimensions
 
-    # Mostrar advertencia si se detecta intento de seleccionar ambas (antes del filtrado)
-    if 'hour' in selected_dimensions and 'date' in update_dimensions(search_type):
-        st.warning("⚠️ No se puede usar 'hour' junto con 'date'. Por favor seleccione solo una de ellas.")
-
     return selected_dimensions
 
 
