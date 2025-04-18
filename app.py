@@ -346,7 +346,7 @@ def show_dimensions_selector(search_type):
 
     # Actualiza el estado
     st.session_state.selected_dimensions = selected_dimensions
-
+    st.write(selected_dimensions)
     return selected_dimensions
 
 
